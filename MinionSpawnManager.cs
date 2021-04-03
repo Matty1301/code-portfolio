@@ -5,12 +5,13 @@ using Unity.LEGO.Behaviours.Triggers;   //For PickupTrigger type
 
 public class MinionSpawnManager : MonoBehaviour
 {
-    private List<Transform> spawnPoints = new List<Transform>();
-    public GameObject minionPrefab;
     public int minionsToSpawn;
-    private GameObject[] aliveMinions;
 
+    public GameObject minionPrefab;
     public PickupTrigger loseTrigger;
+
+    private List<Transform> spawnPoints = new List<Transform>();
+    private GameObject[] aliveMinions;
 
     void Start()
     {
