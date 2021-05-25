@@ -5,6 +5,7 @@ Frontier contains the largest number of examples as this shows my best and most 
 
 This includes many intermediate and advanced level programming techniques such as:  
 Coroutines  
+Inheritance   
 Events  
 Callback functions  
 Interfaces  
