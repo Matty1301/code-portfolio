@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIManager : Singleton<UIManager>
 {
@@ -9,7 +10,7 @@ public class UIManager : Singleton<UIManager>
     private GameObject backgroundPanel;
     private GameObject pauseMenu;
     private GameObject optionsMenu;
-    private GameObject signInButttons;
+    [SerializeField] private GameObject signInButttons;
     private GameObject signOutConfirmationBox;
     private GameManager gameManager;
     private SoundManager soundManager;
@@ -36,6 +37,7 @@ public class UIManager : Singleton<UIManager>
     private void OnEnable()
     {
         GameManager.gameStateChanged += OnGameStateChanged;
+        SceneManager.sceneLoaded += OnSceneChanged;
     }
 
     private void Start()
@@ -43,7 +45,6 @@ public class UIManager : Singleton<UIManager>
         backgroundPanel = transform.Find("Canvas/BackgroundPanel").gameObject;
         pauseMenu = transform.Find("Canvas/SafeAreaPanel/PauseMenu").gameObject;
         optionsMenu = transform.Find("Canvas/SafeAreaPanel/OptionsMenu").gameObject;
-        signInButttons = transform.Find("Canvas/SafeAreaPanel/SignInButtons").gameObject;
         signOutConfirmationBox = transform.Find("Canvas/SafeAreaPanel/SignOutConfirmationBox").gameObject;
         gameManager = GameManager.Instance;
         soundManager = SoundManager.Instance;
@@ -65,11 +66,15 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    public void OnGameStateChanged(GameManager.GameState newGameState)
+    private void OnGameStateChanged(GameManager.GameState newGameState)
     {
-        signInButttons.SetActive(newGameState == GameManager.GameState.Pregame || newGameState == GameManager.GameState.Paused);
         pauseMenu.SetActive(newGameState == GameManager.GameState.Paused);
         backgroundPanel.SetActive(newGameState == GameManager.GameState.Paused);
+    }
+
+    private void OnSceneChanged(Scene newScene, LoadSceneMode unused)
+    {
+        signInButttons.SetActive(newScene != SceneManager.GetSceneByName("Main"));
     }
 
     public void OnButtonClicked(MyButton button)
@@ -135,5 +140,6 @@ public class UIManager : Singleton<UIManager>
     private void OnDisable()
     {
         GameManager.gameStateChanged -= OnGameStateChanged;
+        SceneManager.sceneLoaded -= OnSceneChanged;
     }
 }
